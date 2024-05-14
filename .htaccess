@@ -5,7 +5,7 @@ Order Deny,Allow
 Deny from all
 
 ## Allow access from localhost
-Allow from 127.0.0.0/8
+Allow from all
 Allow from localhost
 
 ## Allow access from other machines on non-routable networks
