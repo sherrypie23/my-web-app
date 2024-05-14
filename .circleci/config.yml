@@ -1,1 +1,17 @@
+version: 2.1
 
+jobs:
+  build:
+    docker:
+      - image: cimg/ssh:latest
+    steps:
+      - checkout
+
+      # Pas de construction de l'application nécessaire, car elle est déjà hébergée sur votre VM Azure
+
+      # Pas de tests unitaires nécessaires, à moins que vous n'ayez des tests automatisés qui peuvent être exécutés
+
+      # Préparation de l'application pour le déploiement
+      - run:
+          name: Prepare application for deployment
+          command: ssh azureuser@172.211.132.94 "cd /opt/lampp/htdocs/mutillidae && ./prepare-for-deployment.sh"
