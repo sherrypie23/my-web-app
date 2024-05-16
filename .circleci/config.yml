@@ -33,6 +33,16 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Verify Java Installation
+          command: |
+            echo "JAVA_HOME: %JAVA_HOME%"
+            java -version
+      - run:
+          name: Verify SonarScanner Installation
+          command: |
+            echo "SonarScanner Path: %PATH%"
+            sonar-scanner.bat -h
+      - run:
           name: Run SonarScanner
           command: |
             sonar-scanner.bat ^
