@@ -33,15 +33,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Verify Java Installation
+          name: Start SonarQube Service
           command: |
-            echo "JAVA_HOME: %JAVA_HOME%"
-            java -version
-      - run:
-          name: Verify SonarScanner Installation
-          command: |
-            echo "SonarScanner Path: %PATH%"
-            sonar-scanner.bat -h
+            C:\sonarqube-developer-10.5.1.90531\sonarqube-10.5.1.90531\bin\windows-x86-64\sonarservice.bat start
       - run:
           name: Run SonarScanner
           command: |
@@ -50,6 +44,10 @@ jobs:
               -Dsonar.sources=. ^
               -Dsonar.host.url=http://localhost:9099 ^
               -Dsonar.login=%SONAR_TOKEN%
+      - run:
+          name: Stop SonarQube Service
+          command: |
+            C:\sonarqube-developer-10.5.1.90531\sonarqube-10.5.1.90531\bin\windows-x86-64\sonarservice.bat stop
 
 workflows:
   version: 2
