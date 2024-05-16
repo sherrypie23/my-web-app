@@ -41,3 +41,24 @@ jobs:
               -Dsonar.sources=. ^
               -Dsonar.host.url=http://localhost:9099 ^
               -Dsonar.login=%SONAR_TOKEN%
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: main
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: main
+      - scan:
+          requires:
+            - build
+          filters:
+            branches:
+              only: main
