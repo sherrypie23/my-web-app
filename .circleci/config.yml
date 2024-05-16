@@ -23,21 +23,21 @@ jobs:
           command: |
             ssh azureuser@172.211.132.94 "cd /opt/lampp/htdocs/mutillidae && sudo /opt/lampp/xampp restartapache"
 
- scan:
-  machine:
-    enabled: true
-  working_directory: ~/repo
-  environment:
-    JAVA_HOME: "C:\\Program Files\\Java\\jdk-17"
-    PATH: "C:\\sonarqube-developer-10.5.1.90531\\sonarqube-10.5.1.90531\\bin\\windows-x86-64;C:\\Program Files\\Java\\jdk-17\\bin;%PATH%"
-  steps:
-    - checkout
-    # Add any necessary setup steps before running SonarScanner.
-    - run:
-        name: Run SonarScanner
-        command: |
-          sonar-scanner.bat ^
-            -Dsonar.projectKey=%CIRCLE_PROJECT_REPONAME% ^
-            -Dsonar.sources=. ^
-            -Dsonar.host.url=http://localhost:9099 ^
-            -Dsonar.login=%SONAR_TOKEN%
+  scan:
+    machine:
+      enabled: true
+    working_directory: ~/repo
+    environment:
+      JAVA_HOME: "C:\\Program Files\\Java\\jdk-17"
+      PATH: "C:\\sonarqube-developer-10.5.1.90531\\sonarqube-10.5.1.90531\\bin\\windows-x86-64;C:\\Program Files\\Java\\jdk-17\\bin;%PATH%"
+    steps:
+      - checkout
+      # Add any necessary setup steps before running SonarScanner.
+      - run:
+          name: Run SonarScanner
+          command: |
+            sonar-scanner.bat ^
+              -Dsonar.projectKey=%CIRCLE_PROJECT_REPONAME% ^
+              -Dsonar.sources=. ^
+              -Dsonar.host.url=http://localhost:9099 ^
+              -Dsonar.login=%SONAR_TOKEN%
