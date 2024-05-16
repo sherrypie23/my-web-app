@@ -23,9 +23,33 @@ jobs:
           command: |
             ssh azureuser@172.211.132.94 "cd /opt/lampp/htdocs/mutillidae && sudo /opt/lampp/xampp restartapache"
 
+  scan:
+    working_directory: ~/repo
+    environment:
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+    steps:
+      - checkout
+      - run:
+          name: Install OpenJDK
+          command: |
+            choco install openjdk11 --yes
+            refreshenv
+      - run:
+          name: Download and Install SonarScanner
+          command: |
+            choco install sonar-scanner-msbuild-net5 --yes
+      - run:
+          name: Run SonarScanner
+          command: |
+            sonar-scanner \
+              -Dsonar.projectKey=$CIRCLE_BRANCH:$CIRCLE_PROJECT_REPONAME \
+              -Dsonar.sources=. \
+              -Dsonar.host.url=http://localhost:9099 \
+              -Dsonar.login=$SONAR_TOKEN
+
 workflows:
   version: 2
-  build:
+  main:
     jobs:
       - build:
           filters:
@@ -37,3 +61,5 @@ workflows:
           filters:
             branches:
               only: main
+      - scan:
+          context: sonarqube
