@@ -23,21 +23,7 @@ jobs:
           command: |
             ssh azureuser@172.211.132.94 "cd /opt/lampp/htdocs/mutillidae && sudo /opt/lampp/xampp restartapache"
 
-  build_and_analyze:
-    docker:
-      - image: circleci/openjdk:17
-    steps:
-      - checkout
-      # Autres étapes de configuration et de compilation de votre application
-      - run:
-          name: Run SonarQube Scan
-          command: |
-            sonar-scanner \
-              -Dsonar.projectKey=my_project_key \
-              -Dsonar.sources=. \
-              -Dsonar.host.url=$SONAR_HOST_URL \
-              -Dsonar.login=$SONAR_TOKEN
-
+  
 workflows:
   version: 2
   main:
