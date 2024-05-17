@@ -32,15 +32,14 @@ jobs:
       PATH: "C:\\sonarqube-developer-10.5.1.90531\\sonarqube-10.5.1.90531\\bin\\windows-x86-64;C:\\Program Files\\Java\\jdk-17\\bin;%PATH%"
     steps:
       - checkout
-      # Add any necessary setup steps before running SonarScanner.
       - run:
           name: Run SonarScanner
           command: |
             sonar-scanner.bat ^
-              -Dsonar.projectKey=%CIRCLE_PROJECT_REPONAME% ^
+              -Dsonar.projectKey=my_project_key ^
               -Dsonar.sources=. ^
-              -Dsonar.host.url=http://localhost:9099 ^
-              -Dsonar.login=%SONAR_TOKEN%
+              -Dsonar.host.url=$SONAR_HOST_URL ^
+              -Dsonar.login=$SONAR_TOKEN
 
 workflows:
   version: 2
