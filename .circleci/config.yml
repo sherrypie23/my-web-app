@@ -23,39 +23,27 @@ jobs:
           command: |
             ssh azureuser@172.211.132.94 "cd /opt/lampp/htdocs/mutillidae && sudo /opt/lampp/xampp restartapache"
 
-  scan:
-    machine:
-      enabled: true
-    working_directory: ~/repo
-    environment:
-      JAVA_HOME: "C:\\Program Files\\Java\\jdk-17"
-      PATH: "C:\\sonarqube-developer-10.5.1.90531\\sonarqube-10.5.1.90531\\bin\\windows-x86-64;C:\\Program Files\\Java\\jdk-17\\bin;%PATH%"
+  build_and_analyze:
+    docker:
+      - image: circleci/openjdk:17
     steps:
       - checkout
+      # Autres étapes de configuration et de compilation de votre application
       - run:
-          name: Run SonarScanner
+          name: Run SonarQube Scan
           command: |
-            sonar-scanner.bat ^
-              -Dsonar.projectKey=my_project_key ^
-              -Dsonar.sources=. ^
-              -Dsonar.host.url=$SONAR_HOST_URL ^
+            sonar-scanner \
+              -Dsonar.projectKey=my_project_key \
+              -Dsonar.sources=. \
+              -Dsonar.host.url=$SONAR_HOST_URL \
               -Dsonar.login=$SONAR_TOKEN
 
 workflows:
   version: 2
   main:
     jobs:
-      - build:
-          filters:
-            branches:
-              only: main
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only: main
-      - scan:
+      - build
+      - build_and_analyze:
           requires:
             - build
           filters:
