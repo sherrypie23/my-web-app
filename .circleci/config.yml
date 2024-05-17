@@ -23,18 +23,11 @@ jobs:
           command: |
             ssh azureuser@172.211.132.94 "cd /opt/lampp/htdocs/mutillidae && sudo /opt/lampp/xampp restartapache"
 
-  
 workflows:
   version: 2
   main:
     jobs:
       - build
-      - build_and_analyze:
-          requires:
-            - build
-          filters:
-            branches:
-              only: main
       - deploy:
           requires:
             - build
