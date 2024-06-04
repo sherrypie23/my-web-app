@@ -2,17 +2,10 @@ version: 2.1
 
 jobs:
   build:
-    working_directory: ~/repo
     docker:
-      - image: cimg/node:18.10.0
+      - image: circleci/php:7.4-cli
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: npm install
-      - run:
-          name: Build project
-          command: npm run build
       - run:
           name: Install SonarQube Scanner
           command: |
