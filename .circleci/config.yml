@@ -1,4 +1,5 @@
 version: 2.1
+
 jobs:
   build:
     working_directory: ~/repo
@@ -6,12 +7,16 @@ jobs:
       - image: cimg/node:18.10.0
     steps:
       - checkout
-      - add_ssh_keys:
-          fingerprints:
-            - $AZURE_VM_SSH_FINGERPRINT
       - run:
-          name: Copy updated files to VM
-          command: scp -o StrictHostKeyChecking=no -r ./* azureuser@172.211.132.94:/opt/lampp/htdocs/mutillidae
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Build project
+          command: npm run build
+      - sonarcloud/scan:
+          token: SONAR_TOKEN
+          organization: sherrypie23
+          projectKey: sherrypie23_my-web-app
 
   deploy:
     machine:
@@ -21,6 +26,9 @@ jobs:
           name: Deploy Over SSH
           command: |
             ssh azureuser@172.211.132.94 "cd /opt/lampp/htdocs/mutillidae && sudo /opt/lampp/xampp restartapache"
+
+orbs:
+  sonarcloud: sonarsource/sonarcloud@2.0.0
 
 workflows:
   version: 2
@@ -32,4 +40,4 @@ workflows:
             - build
           filters:
             branches:
-              only: main   
+              only: main
