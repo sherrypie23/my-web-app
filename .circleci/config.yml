@@ -1,29 +1,9 @@
 version: 2.1
-
 jobs:
   build:
-    working_directory: ~/my-web-app
+    working_directory: ~/repo
     docker:
-      - image: cimg/php:7.4
-    steps:
-      - checkout
-      - run:
-          name: Download SonarQube Scanner
-          command: |
-            curl -sSLo /tmp/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-            unzip /tmp/sonar-scanner-cli.zip -d /tmp
-            mv /tmp/sonar-scanner-4.6.2.2472-linux /tmp/sonar-scanner
-      - run:
-          name: SonarQube Scan
-          command: |
-            /tmp/sonar-scanner/bin/sonar-scanner \
-            -Dsonar.projectKey=sherrypie23_my-web-app \
-            -Dsonar.organization=sherrypie23 \
-            -Dsonar.sources=.
-
-  deploy:
-    machine:
-      enabled: true
+      - image: cimg/node:18.10.0
     steps:
       - checkout
       - add_ssh_keys:
@@ -32,6 +12,11 @@ jobs:
       - run:
           name: Copy updated files to VM
           command: scp -o StrictHostKeyChecking=no -r ./* azureuser@172.211.132.94:/opt/lampp/htdocs/mutillidae
+
+  deploy:
+    machine:
+      enabled: true
+    steps:
       - run:
           name: Deploy Over SSH
           command: |
@@ -47,4 +32,4 @@ workflows:
             - build
           filters:
             branches:
-              only: main
+              only: main   
