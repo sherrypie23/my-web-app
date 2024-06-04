@@ -4,14 +4,24 @@ jobs:
   build:
     working_directory: ~/repo
     docker:
-      - image: php:7.4-cli
+      - image: cimg/node:18.10.0
     steps:
       - checkout
-      # Éventuellement, exécuter des étapes pour installer les dépendances PHP
+      # Éventuellement, exécutez des étapes pour installer les dépendances de votre projet
+
+  sonarcloud_scan:
+    docker:
+      - image: cimg/base:2021.09 # Choisissez une image compatible avec SonarCloud
+    steps:
+      - checkout
       - run:
-          name: Run PHP unit tests
-          command: phpunit
-      - sonarcloud/scan
+          name: SonarCloud Scan
+          command: sonar-scanner \
+            -Dsonar.organization=sherrypie23 \
+            -Dsonar.projectKey=sherrypie23_my-web-app \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=$SONAR_TOKEN
 
   deploy:
     machine:
@@ -22,16 +32,17 @@ jobs:
           command: |
             ssh azureuser@172.211.132.94 "cd /opt/lampp/htdocs/mutillidae && sudo /opt/lampp/xampp restartapache"
 
-orbs:
-  sonarcloud: sonarsource/sonarcloud@2.0.0
-
 workflows:
   version: 2
   main:
     jobs:
       - build
+      - sonarcloud_scan:
+          requires:
+            - build
       - deploy:
           requires:
+            - sonarcloud_scan # Exécuter la tâche de déploiement après l'analyse SonarCloud
             - build
           filters:
             branches:
