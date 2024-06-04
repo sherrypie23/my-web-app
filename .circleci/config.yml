@@ -14,7 +14,6 @@ jobs:
           name: Build project
           command: npm run build
       - sonarcloud/scan:
-          token: SONAR_TOKEN
           organization: sherrypie23
           projectKey: sherrypie23_my-web-app
 
