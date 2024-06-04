@@ -1,7 +1,4 @@
- require_once '/opt/applicationinsights/ApplicationInsights-PHP/ApplicationInsights.php';
-
-        $configPath = '/opt/applicationinsights/ApplicationInsights.json';
-        $applicationInsights = new ApplicationInsights($configPath);
+ <?php
 	/* ------------------------------------------
 	 * Constants used in application
 	 * ------------------------------------------ */
