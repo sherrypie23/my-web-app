@@ -1,10 +1,26 @@
 version: 2.1
 
+orbs:
+  sonarcloud: sonarsource/sonarcloud@2.0.0
+
 jobs:
   build:
     working_directory: ~/repo
     docker:
       - image: cimg/node:18.10.0
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Build project
+          command: npm run build
+      - sonarcloud/scan
+
+  deploy:
+    machine:
+      enabled: true
     steps:
       - checkout
       - add_ssh_keys:
@@ -13,18 +29,12 @@ jobs:
       - run:
           name: Copy updated files to VM
           command: scp -o StrictHostKeyChecking=no -r ./* azureuser@172.211.132.94:/opt/lampp/htdocs/mutillidae
-
-  deploy:
-    machine:
-      enabled: true
-    steps:
       - run:
           name: Deploy Over SSH
           command: |
             ssh azureuser@172.211.132.94 "cd /opt/lampp/htdocs/mutillidae && sudo /opt/lampp/xampp restartapache"
 
 workflows:
-  version: 2
   main:
     jobs:
       - build
