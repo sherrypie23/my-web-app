@@ -26,7 +26,6 @@ jobs:
       - run:
           name: SonarCloud Scan
           command: sonar-scanner \
-            --define sonar.organization=sherrypie23 \
             --define sonar.projectKey=sherrypie23_my-web-app \
             --define sonar.sources=. \
             --define sonar.host.url=https://sonarcloud.io \
