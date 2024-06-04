@@ -13,9 +13,7 @@ jobs:
       - run:
           name: Build project
           command: npm run build
-      - sonarcloud/scan:
-          organization: sherrypie23
-          projectKey: sherrypie23_my-web-app
+      - sonarcloud/scan
 
   deploy:
     machine:
