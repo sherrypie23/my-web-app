@@ -11,7 +11,7 @@ jobs:
 
   sonarcloud_scan:
     docker:
-      - image: cimg/base:2021.09 # Choisissez une image compatible avec SonarCloud
+      - image: sonarsource/sonar-scanner-cli:latest
     steps:
       - checkout
       - run:
@@ -31,6 +31,9 @@ jobs:
           name: Deploy Over SSH
           command: |
             ssh azureuser@172.211.132.94 "cd /opt/lampp/htdocs/mutillidae && sudo /opt/lampp/xampp restartapache"
+
+orbs:
+  sonarcloud: sonarsource/sonarcloud@2.0.0
 
 workflows:
   version: 2
