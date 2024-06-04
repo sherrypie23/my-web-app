@@ -2,31 +2,30 @@ version: 2.1
 
 jobs:
   build:
-    working_directory: ~/repo
+    working_directory: ~/my-web-app  # Chemin vers le répertoire de votre projet sur GitHub
     docker:
-      - image: cimg/node:18.10.0
+      - image: cimg/php:7.4
     steps:
       - checkout
-      - run:
-          name: Install Dependencies
-          command: npm install
-      - run:
-          name: Build Project
-          command: npm run build
       - run:
           name: SonarQube Scan
           command: |
             /tmp/sonar-scanner/bin/sonar-scanner \
             -Dsonar.projectKey=sherrypie23_my-web-app \
             -Dsonar.organization=sherrypie23 \
-            -Dsonar.sources=. \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=$SONAR_TOKEN
+            -Dsonar.sources=.
 
   deploy:
     machine:
       enabled: true
     steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - $AZURE_VM_SSH_FINGERPRINT
+      - run:
+          name: Copy updated files to VM
+          command: scp -o StrictHostKeyChecking=no -r ./* azureuser@172.211.132.94:/opt/lampp/htdocs/mutillidae
       - run:
           name: Deploy Over SSH
           command: |
