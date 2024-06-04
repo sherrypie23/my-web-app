@@ -4,15 +4,13 @@ jobs:
   build:
     working_directory: ~/repo
     docker:
-      - image: cimg/node:18.10.0
+      - image: php:7.4-cli
     steps:
       - checkout
+      # Éventuellement, exécuter des étapes pour installer les dépendances PHP
       - run:
-          name: Install dependencies
-          command: npm install
-      - run:
-          name: Build project
-          command: npm run build
+          name: Run PHP unit tests
+          command: phpunit
       - sonarcloud/scan
 
   deploy:
