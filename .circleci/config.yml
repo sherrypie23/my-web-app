@@ -6,10 +6,10 @@ orbs:
 jobs:
   build:
     docker:
-      - image: cimg/node:lts
+      - image: cimg/php:7.4
     steps:
       - checkout
-      - run: npm ci
+      # Éventuellement, d'autres étapes de configuration spécifiques à PHP
       - snyk/scan  # Utilisez le bon nom de la commande pour lancer l'analyse Snyk
 
 workflows:
