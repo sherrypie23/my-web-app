@@ -1,11 +1,18 @@
 version: '2.1'
+
 orbs:
-  snyk: snyk/snyk@2.1.0
+  snyk: snyk/snyk@2.1.0  # Assurez-vous de spécifier la version correcte de l'orbe Snyk
+
 jobs:
   build:
     docker:
-      - image: cimg/node:18.10.0 
+      - image: cimg/node:lts
     steps:
       - checkout
-      - snyk/scan
-workflows: null
+      - run: npm ci
+      - snyk/scan  # Utilisez le bon nom de la commande pour lancer l'analyse Snyk
+
+workflows:
+  main:
+    jobs:
+      - build
