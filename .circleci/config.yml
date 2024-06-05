@@ -7,15 +7,12 @@ jobs:
   build:
     working_directory: ~/repo
     docker:
-      - image: cimg/node:18.10.0
+      - image: circleci/php:7.4-cli
     steps:
       - checkout
       - run:
-          name: Install Dependencies
-          command: npm install
-      - run:
-          name: Build Project
-          command: npm run build
+          name: Install PHP Dependencies
+          command: composer install
       - persist_to_workspace:
           root: .
           paths:
@@ -23,7 +20,7 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/php:7.4-cli
     steps:
       - checkout
       - attach_workspace:
