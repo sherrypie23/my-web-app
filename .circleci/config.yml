@@ -6,7 +6,7 @@ orbs:
 jobs:
   snyk_scan:
     docker:
-      - image: cimg/php:7.4
+      - image: cimg/node:18.10.0 
     steps:
       - checkout
       - snyk/scan
