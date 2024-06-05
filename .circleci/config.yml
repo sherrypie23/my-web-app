@@ -1,17 +1,12 @@
 version: 2.1
 
-orbs:
-  snyk: snyk/snyk@2.1.0
-
 jobs:
   snyk_scan:
     docker:
       - image: cimg/php:7.4
     steps:
       - checkout
-      - run: php -v  # Commande de test pour vérifier que PHP est installé
-      # Ajoutez d'autres étapes pour installer ou configurer votre projet PHP
-      - snyk/scan
+      - run: snyk test
 
 workflows:
   main:
