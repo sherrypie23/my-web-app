@@ -1,12 +1,12 @@
 version: 2.1
 
 jobs:
-  synk_scan:
+  snyk_scan:
     docker:
       - image: cimg/node:18.10.0
     steps:
       - checkout
-      - synk/scan
+      - snyk/scan
 
 orbs:
   snyk: snyk/snyk@2.1.0
@@ -14,4 +14,4 @@ orbs:
 workflows:
   main:
     jobs:
-      - synk_scan
+      - snyk_scan
