@@ -1,25 +1,16 @@
 version: 2.1
-
-orbs:
-  sonarcloud: sonarsource/sonarcloud@2.0.0
-
 jobs:
-  sonarcloud_scan:
+  build:
     docker:
-      - image: sonarsource/sonar-scanner-cli:latest
+      - image: node:latest
     steps:
       - checkout
-      - run:
-          name: SonarCloud Scan
-          command: sonar-scanner \
-            -Dsonar.organization=sherrypie23 \
-            -Dsonar.projectKey=sherrypie23_my-web-app \
-            -Dsonar.sources=. \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=$SONAR_TOKEN
-
+      - sonarcloud/scan
+orbs:
+  sonarcloud: sonarsource/sonarcloud@1.1.0
+version: 2.1
 workflows:
-  version: 2
   main:
     jobs:
-      - sonarcloud_scan
+      - build:
+          context: sonarcloud
