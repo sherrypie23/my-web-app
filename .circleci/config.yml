@@ -1,15 +1,11 @@
 version: 2.1
 
 jobs:
-  build:
+  sonarcloud_scan:
     docker:
       - image: cimg/node:18.10.0
     steps:
       - checkout
-      # Éventuellement, exécutez des étapes pour installer les dépendances de votre projet
-      - run:
-          name: Install dependencies and build project
-          command: ********** CHANGE ME 2 **********
       - sonarcloud/scan
 
 orbs:
@@ -18,4 +14,4 @@ orbs:
 workflows:
   main:
     jobs:
-      - build
+      - sonarcloud_scan
