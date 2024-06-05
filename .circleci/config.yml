@@ -10,26 +10,35 @@ jobs:
       - image: cimg/node:18.10.0
     steps:
       - checkout
-      - add_ssh_keys:
-          fingerprints:
-            - $AZURE_VM_SSH_FINGERPRINT
       - run:
           name: Install Dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y openssh-client rsync
+          command: npm install
       - run:
-          name: Copy updated files to VM
-          command: scp -o StrictHostKeyChecking=no -r ./* azureuser@172.211.132.94:/opt/lampp/htdocs/mutillidae
+          name: Build Project
+          command: npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
 
   deploy:
-    machine:
-      enabled: true
+    docker:
+      - image: cimg/base:stable
     steps:
+      - checkout
+      - attach_workspace:
+          at: ~/repo
       - run:
-          name: Deploy Over SSH
+          name: Configure Git
           command: |
-            ssh azureuser@172.211.132.94 "cd /opt/lampp/htdocs/mutillidae && sudo /opt/lampp/xampp restartapache"
+            git config --global user.email "ayaelalaoui19@gmail.com"
+            git config --global user.name "sherrypie23"
+      - run:
+          name: Commit and Push Changes
+          command: |
+            git add .
+            git commit -m "Automated build and deploy"
+            git push origin main
 
   sonarcloud_scan:
     docker:
@@ -54,9 +63,6 @@ workflows:
       - deploy:
           requires:
             - build
-          filters:
-            branches:
-              only: main
       - sonarcloud_scan:
           requires:
             - deploy
