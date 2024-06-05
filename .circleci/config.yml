@@ -1,18 +1,11 @@
-version: 2.1
-
+version: '2.1'
 orbs:
   snyk: snyk/snyk@2.1.0
-
 jobs:
-  snyk_scan:
+  build:
     docker:
-      - image: cimg/php:7.4
+      - image: cimg/node:lts
     steps:
       - checkout
-      - snyk/install
       - snyk/scan
-
-workflows:
-  main:
-    jobs:
-      - snyk_scan
+workflows: null
