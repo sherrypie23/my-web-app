@@ -6,9 +6,11 @@ orbs:
 jobs:
   snyk_scan:
     docker:
-      - image: cimg/node:18.10.0 
+      - image: cimg/php:7.4
     steps:
       - checkout
+      - run: php -v  # Commande de test pour vérifier que PHP est installé
+      # Ajoutez d'autres étapes pour installer ou configurer votre projet PHP
       - snyk/scan
 
 workflows:
