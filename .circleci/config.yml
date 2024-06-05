@@ -11,11 +11,6 @@ jobs:
       - checkout
       - snyk/install
       - snyk/scan
-      - run:
-          name: Run Snyk
-          command: |
-            cd /home/circleci/project
-            snyk test --all-projects
 
 workflows:
   main:
