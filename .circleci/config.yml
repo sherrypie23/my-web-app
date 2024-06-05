@@ -9,11 +9,9 @@ jobs:
       - image: cimg/php:7.4
     steps:
       - checkout
-      - run: composer install
       - snyk/scan
 
 workflows:
   main:
     jobs:
       - snyk_scan
-
