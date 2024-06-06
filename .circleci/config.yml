@@ -1,18 +1,15 @@
-version: '2.1'
-
-orbs:
-  snyk: snyk/snyk@2.1.0  # Assurez-vous de spécifier la version correcte de l'orbe Snyk
+version: 2.1
 
 jobs:
-  build:
+  sonarcloud_scan:
     docker:
-      - image: cimg/php:7.4
+      - image: cimg/node:18.10.0
     steps:
       - checkout
-      # Éventuellement, d'autres étapes de configuration spécifiques à PHP
-      - snyk/scan  # Utilisez le bon nom de la commande pour lancer l'analyse Snyk
-
-workflows:
+      -sonarcloud/scan
+orbs:
+  sonarcloud: sonarsource/sonarcloud@2.0.0  
+  workflows:
   main:
-    jobs:
-      - build
+  jobs:
+      - sonarcloud_scan
