@@ -1,15 +1,17 @@
 version: 2.1
 
+orbs:
+  sonarcloud: sonarsource/sonarcloud@2.0.0
+
 jobs:
   sonarcloud_scan:
     docker:
       - image: cimg/node:18.10.0
     steps:
       - checkout
-      -sonarcloud/scan
-orbs:
-  sonarcloud: sonarsource/sonarcloud@2.0.0  
-  workflows:
+      - sonarcloud/scan
+
+workflows:
   main:
-  jobs:
+    jobs:
       - sonarcloud_scan
