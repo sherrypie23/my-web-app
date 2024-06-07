@@ -4,14 +4,16 @@ orbs:
   snyk: snyk/snyk@2.1.0
 
 jobs:
-  snyk:
+  snyk_scan:
     docker:
       - image: cimg/node:18.10.0
     steps:
       - checkout
-      - snyk/snyk
+      - snyk/auth:
+          token: $SNYK_TOKEN
+      - snyk/test
 
 workflows:
   main:
     jobs:
-      - snyk
+      - snyk_scan
