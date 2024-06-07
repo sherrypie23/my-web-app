@@ -1,17 +1,20 @@
 version: 2.1
 
 orbs:
-  sonarcloud: sonarsource/sonarcloud@2.0.0
+  snyk: snyk/snyk@2.1.0
 
 jobs:
-  snyk:
+  snyk_scan:
     docker:
       - image: cimg/node:18.10.0
     steps:
       - checkout
-      - sonarcloud/scan
+      - snyk/auth:
+          token: $SNYK_TOKEN
+      - snyk/test:
+          command: test
 
 workflows:
   main:
     jobs:
-      - snyk
+      - snyk_scan
