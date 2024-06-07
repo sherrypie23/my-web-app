@@ -1,19 +1,17 @@
 version: 2.1
 
 orbs:
-  snyk: snyk/snyk@2.1.0
+  snyk: snyk/snyk@2.0.0
 
 jobs:
-  snyk_scan:
+  snyk:
     docker:
       - image: cimg/node:18.10.0
     steps:
       - checkout
-      - snyk/auth:
-          token: $SNYK_TOKEN
-      - snyk/test
+      - synk/scan
 
 workflows:
   main:
     jobs:
-      - snyk_scan
+      - snyk
