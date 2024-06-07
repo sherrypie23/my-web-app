@@ -9,7 +9,7 @@ jobs:
       - image: cimg/node:18.10.0
     steps:
       - checkout
-      - synk/scan
+      - snyk/scan
 
 workflows:
   main:
